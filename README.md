@@ -4,7 +4,7 @@ A WhatsApp based ordering system for small cafes/restaurants using Twilio & Shop
 
 #### How it looks like
 
-<img src="https://github.com/s4kibs4mi/twilfe/blob/master/resources/home.PNG?raw=true" alt="" height="600" />
+<img src="https://github.com/s4kibs4mi/twilfe/blob/master/resources/home.PNG?raw=true" alt="" height="800" />
 
 #### Third-Party Services
 
