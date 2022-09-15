@@ -1,0 +1,9 @@
+---
+app:
+  name: "twilfe"
+  host: "0.0.0.0"
+  port: 8000
+  shopemaa_key: ""  # shopemaa app type store key
+  shopemaa_secret: "" # shopemaa app type store secret
+  twilio_username: "" # twilio accountSid
+  twilio_password: "" # twilio auth token
