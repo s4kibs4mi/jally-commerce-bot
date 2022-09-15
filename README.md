@@ -1,6 +1,6 @@
 # Twilfe
 
-A WhatsApp based ordering system for small cafes/restaurants using Twilio & Shopemaa.
+A whatsApp based ordering system for small cafes/restaurants using Twilio & Shopemaa.
 
 #### How it looks like
 
@@ -8,5 +8,13 @@ A WhatsApp based ordering system for small cafes/restaurants using Twilio & Shop
 
 #### Third-Party Services
 
-* Twilio - Twilio's WhatsApp messaging API
-* Shopemaa - Shopemaa's headless eCommerce API
+* [Twilio](https://twilio.com) - Twilio's WhatsApp messaging API
+* [Shopemaa](https://shopemaa.com) - Shopemaa's headless eCommerce API
+
+#### Configs
+
+Check `config.example.yml` file.
+
+#### Environment variables
+
+CONFIG_DIR # path to your config variable
