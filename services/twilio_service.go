@@ -8,6 +8,7 @@ import (
 
 type ITwilioService interface {
 	Send(to, from, payload string) error
+	Api() *twilio2.RestClient
 }
 
 type TwilioService struct {
@@ -25,6 +26,10 @@ func (ts *TwilioService) Send(to, from, payload string) error {
 		return err
 	}
 	return nil
+}
+
+func (ts *TwilioService) Api() *twilio2.RestClient {
+	return ts.client
 }
 
 func NewTwilioService(cfg *config.Application) ITwilioService {

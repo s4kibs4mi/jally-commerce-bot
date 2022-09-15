@@ -113,3 +113,19 @@ type OrderDetail struct {
 	CreatedAt        string      `json:"createdAt"`
 	Cart             OrderedCart `json:"cart"`
 }
+
+type Shop struct {
+	Name            string   `json:"name"`
+	Title           string   `json:"title"`
+	Description     string   `json:"description"`
+	Tags            []string `json:"tags"`
+	MetaName        string   `json:"metaName"`
+	MetaDescription string   `json:"metaDescription"`
+	MetaTags        []string `json:"metaTags"`
+	Logo            string   `json:"logo"`
+	LogoPath        string   `json:"logoPath"`
+	Favicon         string   `json:"favicon"`
+	FaviconPath     string   `json:"faviconPath"`
+	IsOpen          bool     `json:"isOpen"`
+	Currency        string   `json:"currency"`
+}

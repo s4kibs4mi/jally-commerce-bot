@@ -12,6 +12,7 @@ import (
 type IShopemaaService interface {
 	GetName() string
 	GetCurrency() string
+	GetShop() *models.Shop
 	ListProducts() ([]models.Product, error)
 	AddToCart(productIDs []string) (string, error)
 	ConfirmOrder(params *models.PlaceOrderParams) (string, error)
@@ -20,17 +21,20 @@ type IShopemaaService interface {
 }
 
 type ShopemaaService struct {
-	client       *graphql.Client
-	shopName     string
-	shopCurrency string
+	client *graphql.Client
+	shop   *models.Shop
 }
 
 func (ss *ShopemaaService) GetName() string {
-	return ss.shopName
+	return ss.shop.Name
 }
 
 func (ss *ShopemaaService) GetCurrency() string {
-	return ss.shopCurrency
+	return ss.shop.Currency
+}
+
+func (ss *ShopemaaService) GetShop() *models.Shop {
+	return ss.shop
 }
 
 func (ss *ShopemaaService) ListProducts() ([]models.Product, error) {
@@ -231,21 +235,7 @@ func NewShopemaaService(cfg *cfg.Application) (IShopemaaService, error) {
 		})
 
 	var shopQuery struct {
-		StoreBySecret struct {
-			Name            string   `json:"name"`
-			Title           string   `json:"title"`
-			Description     string   `json:"description"`
-			Tags            []string `json:"tags"`
-			MetaName        string   `json:"metaName"`
-			MetaDescription string   `json:"metaDescription"`
-			MetaTags        []string `json:"metaTags"`
-			Logo            string   `json:"logo"`
-			LogoPath        string   `json:"logoPath"`
-			Favicon         string   `json:"favicon"`
-			FaviconPath     string   `json:"faviconPath"`
-			IsOpen          bool     `json:"isOpen"`
-			Currency        string   `json:"currency"`
-		} `json:"storeBySecret"`
+		StoreBySecret models.Shop `json:"storeBySecret"`
 	}
 
 	err := c.Query(context.Background(), &shopQuery, nil)
@@ -254,9 +244,8 @@ func NewShopemaaService(cfg *cfg.Application) (IShopemaaService, error) {
 	}
 
 	ss := &ShopemaaService{
-		client:       c,
-		shopName:     shopQuery.StoreBySecret.Name,
-		shopCurrency: shopQuery.StoreBySecret.Currency,
+		client: c,
+		shop:   &shopQuery.StoreBySecret,
 	}
 	return ss, nil
 }
