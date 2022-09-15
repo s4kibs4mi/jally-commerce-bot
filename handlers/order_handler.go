@@ -35,7 +35,23 @@ func (r *Router) handleOrderDetails(ctx *fiber.Ctx) error {
 				),
 				JavaScript_(),
 			),
-			Title_(HTML(fmt.Sprintf("OrderDetails - %s", r.shopemaaService.GetName()))),
+			Title_(HTML(fmt.Sprintf("Order#%s - %s", order.Hash, r.shopemaaService.GetName()))),
+			Link(
+				Attr(
+					a.Rel_("icon"),
+					a.Type_("image/x-icon"),
+					a.Href_(r.shopemaaService.GetShop().Logo),
+				),
+			),
+			Meta(
+				Attr(a.Name_("og:title"), a.Value_(fmt.Sprintf("Order#%s - %s", order.Hash, r.shopemaaService.GetShop().Name))),
+			),
+			Meta(
+				Attr(a.Name_("og:type"), a.Value_("website")),
+			),
+			Meta(
+				Attr(a.Name_("og:image"), a.Value_(r.shopemaaService.GetShop().Logo)),
+			),
 		),
 		Body_(
 			H1(Attr(a.Class_("text-center mt-5")), Text("Welcome to "+r.shopemaaService.GetName())),

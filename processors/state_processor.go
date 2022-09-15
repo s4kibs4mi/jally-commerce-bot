@@ -159,7 +159,7 @@ func (p *StateProcessor) processPlaceOrder(req *api_request.CustomerRequest) err
 
 	msg := "Thanks for your order.\n"
 	msg += fmt.Sprintf("OrderId: %s\n", orderHash)
-	msg += "You will be notified when it's ready. In the mean time tap the below link to pay online or to check order details."
+	msg += "You will be notified when your order is ready.\nIn the mean time tap the below link to pay online or to check order details."
 
 	if err := p.twilioService.Send(req.From, req.To, msg); err != nil {
 		return err
@@ -170,11 +170,22 @@ func (p *StateProcessor) processPlaceOrder(req *api_request.CustomerRequest) err
 	if err := p.twilioService.Send(req.From, req.To, orderUrl); err != nil {
 		return err
 	}
+	if err := p.stateService.SetState(req.From, models.CustomerStateStart); err != nil {
+		return err
+	}
 
 	return nil
 }
 
 func (p *StateProcessor) processCancelOrder(req *api_request.CustomerRequest) error {
+	msg := "Order cancelled!"
+
+	if err := p.twilioService.Send(req.From, req.To, msg); err != nil {
+		return err
+	}
+	if err := p.stateService.SetState(req.From, models.CustomerStateStart); err != nil {
+		return err
+	}
 
 	return nil
 }
