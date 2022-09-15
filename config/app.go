@@ -13,6 +13,7 @@ type Application struct {
 	ShopemaaSecret string
 	TwilioUsername string
 	TwilioPassword string
+	URL            string
 }
 
 // app is the default application configuration
@@ -36,5 +37,6 @@ func LoadApp() {
 		ShopemaaSecret: viper.GetString("app.shopemaa_secret"),
 		TwilioUsername: viper.GetString("app.twilio_username"),
 		TwilioPassword: viper.GetString("app.twilio_password"),
+		URL:            viper.GetString("app.url"),
 	}
 }

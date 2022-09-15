@@ -7,3 +7,4 @@ app:
   shopemaa_secret: "" # shopemaa app type store secret
   twilio_username: "" # twilio accountSid
   twilio_password: "" # twilio auth token
+  url: "https://example.com"

@@ -2,6 +2,7 @@ package processors
 
 import (
 	"fmt"
+	"github.com/s4kibs4mi/twilfe/config"
 	"github.com/s4kibs4mi/twilfe/log"
 	"github.com/s4kibs4mi/twilfe/models"
 	"github.com/s4kibs4mi/twilfe/models/api_request"
@@ -17,6 +18,7 @@ type StateProcessor struct {
 	stateService    services.IStateService
 	shopemaaService services.IShopemaaService
 	twilioService   services.ITwilioService
+	cfg             *config.Application
 }
 
 func (p *StateProcessor) Process(req *api_request.CustomerRequest) error {
@@ -163,7 +165,7 @@ func (p *StateProcessor) processPlaceOrder(req *api_request.CustomerRequest) err
 		return err
 	}
 
-	orderUrl := fmt.Sprintf("%s/orders/%s", "https://5136-2001-1530-1018-2d57-c004-c911-f279-96e6.ngrok.io", orderHash)
+	orderUrl := fmt.Sprintf("%s/orders/%s", p.cfg.URL, orderHash)
 
 	if err := p.twilioService.Send(req.From, req.To, orderUrl); err != nil {
 		return err
@@ -177,9 +179,10 @@ func (p *StateProcessor) processCancelOrder(req *api_request.CustomerRequest) er
 	return nil
 }
 
-func NewStateProcessor(stateService services.IStateService, shopemaaService services.IShopemaaService,
+func NewStateProcessor(cfg *config.Application, stateService services.IStateService, shopemaaService services.IShopemaaService,
 	twilioService services.ITwilioService) IStateProcessor {
 	return &StateProcessor{
+		cfg:             cfg,
 		stateService:    stateService,
 		shopemaaService: shopemaaService,
 		twilioService:   twilioService,

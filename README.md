@@ -17,4 +17,6 @@ Check `config.example.yml` file.
 
 #### Environment variables
 
+```shell
 CONFIG_DIR # path to your config variable
+```
