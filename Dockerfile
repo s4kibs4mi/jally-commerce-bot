@@ -9,12 +9,12 @@ ENV GOOS="linux"
 ENV GOARCH="amd64"
 ENV GO111MODULE=on
 
-COPY . $GOPATH/src/github.com/s4kibs4mi/twilfe
-WORKDIR $GOPATH/src/github.com/s4kibs4mi/twilfe
+COPY . $GOPATH/src/github.com/s4kibs4mi/jally-commerce-bot
+WORKDIR $GOPATH/src/github.com/s4kibs4mi/jally-commerce-bot
 
 RUN go get -v .
-RUN go build -v -o twilfe
-RUN mv twilfe /go/bin/twilfe
+RUN go build -v -o jally-commerce-bot
+RUN mv twilfe /go/bin/jally-commerce-bot
 
 FROM alpine
 
@@ -23,6 +23,6 @@ RUN apk add bash
 
 WORKDIR /root
 
-COPY --from=builder /go/bin/twilfe /usr/local/bin/twilfe
+COPY --from=builder /go/bin/jally-commerce-bot /usr/local/bin/jally-commerce-bot
 
-ENTRYPOINT ["twilfe"]
+ENTRYPOINT ["jally-commerce-bot"]

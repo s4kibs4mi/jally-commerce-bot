@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hasura/go-graphql-client"
-	cfg "github.com/s4kibs4mi/twilfe/config"
-	"github.com/s4kibs4mi/twilfe/models"
+	cfg "github.com/s4kibs4mi/jally-commerce-bot/config"
+	"github.com/s4kibs4mi/jally-commerce-bot/models"
 	"net/http"
 	"net/url"
 )

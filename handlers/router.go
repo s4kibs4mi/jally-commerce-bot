@@ -6,9 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/template/html"
-	"github.com/s4kibs4mi/twilfe/config"
-	"github.com/s4kibs4mi/twilfe/processors"
-	"github.com/s4kibs4mi/twilfe/services"
+	"github.com/s4kibs4mi/jally-commerce-bot/config"
+	"github.com/s4kibs4mi/jally-commerce-bot/processors"
+	"github.com/s4kibs4mi/jally-commerce-bot/services"
 	"time"
 )
 

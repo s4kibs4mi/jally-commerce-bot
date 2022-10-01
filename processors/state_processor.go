@@ -2,11 +2,11 @@ package processors
 
 import (
 	"fmt"
-	"github.com/s4kibs4mi/twilfe/config"
-	"github.com/s4kibs4mi/twilfe/log"
-	"github.com/s4kibs4mi/twilfe/models"
-	"github.com/s4kibs4mi/twilfe/models/api_request"
-	"github.com/s4kibs4mi/twilfe/services"
+	"github.com/s4kibs4mi/jally-commerce-bot/config"
+	"github.com/s4kibs4mi/jally-commerce-bot/log"
+	"github.com/s4kibs4mi/jally-commerce-bot/models"
+	"github.com/s4kibs4mi/jally-commerce-bot/models/api_request"
+	"github.com/s4kibs4mi/jally-commerce-bot/services"
 	"strings"
 )
 

@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/s4kibs4mi/twilfe/models"
+	"github.com/s4kibs4mi/jally-commerce-bot/models"
 )
 
 type IStateService interface {

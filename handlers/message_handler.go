@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/s4kibs4mi/twilfe/log"
-	"github.com/s4kibs4mi/twilfe/models/api_request"
+	"github.com/s4kibs4mi/jally-commerce-bot/log"
+	"github.com/s4kibs4mi/jally-commerce-bot/models/api_request"
 )
 
 func (r *Router) handleMessageReceived(ctx *fiber.Ctx) error {

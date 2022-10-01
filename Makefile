@@ -10,8 +10,8 @@ deps:
 
 build: deps
 	@echo "Running build..."
-	GO111MODULE=on GOARCH="amd64" CGO_ENABLED=0 go build -v -o twilfe
+	GO111MODULE=on GOARCH="amd64" CGO_ENABLED=0 go build -v -o jally-commerce-bot
 
 run:
 	@echo "Running server..."
-	./twilfe serve
+	./jally-commerce-bot serve

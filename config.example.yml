@@ -1,6 +1,6 @@
 ---
 app:
-  name: "twilfe"
+  name: "jally-commerce-bot"
   host: "0.0.0.0"
   port: 8000
   shopemaa_key: ""  # shopemaa app type store key

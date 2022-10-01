@@ -2,11 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/s4kibs4mi/twilfe/config"
-	"github.com/s4kibs4mi/twilfe/handlers"
-	"github.com/s4kibs4mi/twilfe/log"
-	"github.com/s4kibs4mi/twilfe/processors"
-	"github.com/s4kibs4mi/twilfe/services"
+	"github.com/s4kibs4mi/jally-commerce-bot/config"
+	"github.com/s4kibs4mi/jally-commerce-bot/handlers"
+	"github.com/s4kibs4mi/jally-commerce-bot/log"
+	"github.com/s4kibs4mi/jally-commerce-bot/processors"
+	"github.com/s4kibs4mi/jally-commerce-bot/services"
 	"github.com/spf13/cobra"
 	"os"
 	"os/signal"

@@ -1,7 +1,7 @@
 package log
 
 import (
-	"github.com/s4kibs4mi/twilfe/log/hooks"
+	"github.com/s4kibs4mi/jally-commerce-bot/log/hooks"
 	"github.com/sirupsen/logrus"
 	"os"
 )

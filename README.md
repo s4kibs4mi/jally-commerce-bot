@@ -1,10 +1,10 @@
-# Twilfe
+# Jally Commerce Bot
 
-A whatsApp based ordering system for small cafes/restaurants using Twilio & Shopemaa.
+A bot for automating order management system using Twilio & Shopemaa
 
 #### How it looks like
 
-<img src="https://github.com/s4kibs4mi/twilfe/blob/master/resources/home.PNG?raw=true" alt="" height="800" />
+<img src="https://github.com/s4kibs4mi/jally-commerce-bot/blob/master/resources/home.PNG?raw=true" alt="" height="800" />
 
 #### Third-Party Services
 
@@ -20,3 +20,5 @@ Check `config.example.yml` file.
 ```shell
 CONFIG_DIR # path to your config variable
 ```
+
+Distributed under MIT license.

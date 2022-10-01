@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/s4kibs4mi/twilfe/log"
-	"github.com/s4kibs4mi/twilfe/models"
+	"github.com/s4kibs4mi/jally-commerce-bot/log"
+	"github.com/s4kibs4mi/jally-commerce-bot/models"
 	"sync"
 )
 

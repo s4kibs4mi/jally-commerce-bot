@@ -1,4 +1,4 @@
-module github.com/s4kibs4mi/twilfe
+module github.com/s4kibs4mi/jally-commerce-bot
 
 go 1.18
 

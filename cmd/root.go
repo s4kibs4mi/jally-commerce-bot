@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/s4kibs4mi/twilfe/config"
+	"github.com/s4kibs4mi/jally-commerce-bot/config"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -11,9 +11,9 @@ import (
 var (
 	// RootCmd is the root command of nur service
 	RootCmd = &cobra.Command{
-		Use:   "twilfe",
-		Short: "An ordering service for small cafe using Twilio & Shopemaa",
-		Long:  `An ordering service for small cafe using Twilio & Shopemaa`,
+		Use:   "jally-commerce-bot",
+		Short: "A bot for automating order management system using Twilio & Shopemaa",
+		Long:  `A bot for automating order management system using Twilio & Shopemaa`,
 	}
 )
 

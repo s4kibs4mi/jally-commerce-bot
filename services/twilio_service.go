@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/s4kibs4mi/twilfe/config"
+	"github.com/s4kibs4mi/jally-commerce-bot/config"
 	twilio2 "github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
 )
