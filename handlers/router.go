@@ -51,6 +51,8 @@ func (r *Router) Start(addr string) error {
 	r.app.Get("/", r.handleIndex)
 	r.app.Post("/messages/", r.handleMessageReceived)
 	r.app.Get("/orders/:hash/", r.handleOrderDetails)
+	r.app.Post("/orders/:hash/", r.handleOrderDetails)
+	r.app.Get("/orders/:hash/payment/", r.handlePayment)
 	r.app.Get("/checkout/:cartId/", r.handleCheckout)
 	r.app.Post("/checkout/:cartId/", r.handleCheckoutSubmit)
 	return r.app.Listen(addr)

@@ -18,15 +18,14 @@ type IShopemaaService interface {
 	ListProducts() ([]models.Product, error)
 	AddToCart(productIDs []string) (string, error)
 	GetCart(cartID string) (*models.Cart, error)
-	ConfirmOrder(params *models.PlaceOrderParams) (string, error)
 	PlaceOrder(params *models.GuestCheckoutPlaceOrderParams) (string, error)
-	Pay(orderID string) error
 	OrderDetails(orderID string) (*models.OrderDetail, error)
 	OrderDetailsForGuest(orderHash, email string) (*models.OrderDetail, error)
 	ListShippingMethods() ([]models.ShippingMethod, error)
 	ListPaymentMethods() ([]models.PaymentMethod, error)
 	ListLocations() ([]models.Location, error)
 	CheckDiscount(cartID, couponCode string, shippingMethodID *string) (int64, error)
+	GeneratePaymentNonce(orderId, orderHash string, email string, appUrl string) (*models.PaymentNonce, error)
 }
 
 type ShopemaaService struct {
@@ -181,60 +180,6 @@ func (ss *ShopemaaService) AddToCart(productIDs []string) (string, error) {
 	return cartID, nil
 }
 
-func (ss *ShopemaaService) ConfirmOrder(params *models.PlaceOrderParams) (string, error) {
-	locations, err := ss.ListLocations()
-	if err != nil {
-		return "", err
-	}
-	paymentMethods, err := ss.ListShippingMethods()
-	if err != nil {
-		return "", err
-	}
-	shippingMethods, err := ss.ListPaymentMethods()
-	if err != nil {
-		return "", err
-	}
-
-	var placeOrderQuery struct {
-		OrderGuestCheckout struct {
-			Hash string `json:"hash"`
-		} `graphql:"orderGuestCheckout(params: $params)"`
-	}
-
-	if params.Email == "" {
-		params.Email = fmt.Sprintf("test@shopemaa.com")
-	}
-
-	var variables = map[string]interface{}{
-		"params": models.GuestCheckoutPlaceOrderParams{
-			CartID:    params.CartID,
-			FirstName: params.FirstName,
-			LastName:  params.LastName,
-			Email:     params.Email,
-			BillingAddress: models.AddressParams{
-				Street:     "test",
-				City:       "test",
-				Postcode:   "test",
-				LocationId: locations[0].ID,
-			},
-			ShippingAddress: models.AddressParams{
-				Street:     "test",
-				City:       "test",
-				Postcode:   "test",
-				LocationId: locations[0].ID,
-			},
-			ShippingMethodId: shippingMethods[0].ID,
-			PaymentMethodId:  paymentMethods[0].ID,
-		},
-	}
-
-	if err := ss.client.Mutate(context.Background(), &placeOrderQuery, variables, graphql.OperationName("orderGuestCheckout")); err != nil {
-		return "", err
-	}
-
-	return placeOrderQuery.OrderGuestCheckout.Hash, nil
-}
-
 func (ss *ShopemaaService) PlaceOrder(params *models.GuestCheckoutPlaceOrderParams) (string, error) {
 	var placeOrderQuery struct {
 		OrderGuestCheckout struct {
@@ -255,8 +200,30 @@ func (ss *ShopemaaService) PlaceOrder(params *models.GuestCheckoutPlaceOrderPara
 	return placeOrderQuery.OrderGuestCheckout.Hash, nil
 }
 
-func (ss *ShopemaaService) Pay(orderID string) error {
-	return nil
+func (ss *ShopemaaService) GeneratePaymentNonce(orderId, orderHash string, email string, appUrl string) (*models.PaymentNonce, error) {
+	var nonceQuery struct {
+		PaymentNonce models.PaymentNonce `graphql:"orderGeneratePaymentNonceForGuest(orderId: $orderId, customerEmail: $customerEmail, overrides: $overrides)"`
+	}
+
+	successUrl := fmt.Sprintf("%s/orders/%s/?email=%s&payment=success", appUrl, orderHash, email)
+	failureUrl := fmt.Sprintf("%s/orders/%s/?email=%s&payment=failure", appUrl, orderHash, email)
+
+	var variables = map[string]interface{}{
+		"orderId":       graphql.String(orderId),
+		"customerEmail": graphql.String(email),
+		"overrides": models.PaymentCallbackOverrides{
+			SuccessCallback: successUrl,
+			FailureCallback: failureUrl,
+		},
+	}
+
+	if err := ss.client.Mutate(context.Background(), &nonceQuery, variables, graphql.OperationName("orderGeneratePaymentNonceForGuest")); err != nil {
+		b, _ := json.Marshal(err)
+		fmt.Println(string(b))
+		return nil, err
+	}
+
+	return &nonceQuery.PaymentNonce, nil
 }
 
 func (ss *ShopemaaService) OrderDetails(orderID string) (*models.OrderDetail, error) {

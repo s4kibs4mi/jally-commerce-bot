@@ -10,8 +10,9 @@ func (r *Router) handleOrderDetails(ctx *fiber.Ctx) error {
 		return ctx.SendStatus(404)
 	}
 	return ctx.Render("order_details", map[string]interface{}{
-		"order":      order,
-		"shop":       r.shopemaaService.GetShop(),
-		"page_title": "Order Details",
+		"order":            order,
+		"shop":             r.shopemaaService.GetShop(),
+		"page_title":       "Order Details",
+		"show_payment_btn": order.PaymentStatus != "Paid" && order.PaymentMethod.IsDigitalPayment,
 	})
 }

@@ -154,6 +154,7 @@ type OrderDetail struct {
 type Customer struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
+	Email     string `json:"email"`
 }
 
 type CouponCode struct {
@@ -180,4 +181,19 @@ type Cart struct {
 	ID                 string          `json:"id"`
 	IsShippingRequired bool            `json:"isShippingRequired"`
 	CartItems          []QueryCartItem `json:"cartItems"`
+}
+
+type PaymentNonce struct {
+	PaymentGatewayName   string `json:"PaymentGatewayName" graphql:"PaymentGatewayName"`
+	Nonce                string `json:"Nonce" graphql:"Nonce"`
+	StripePublishableKey string `json:"StripePublishableKey" graphql:"StripePublishableKey"`
+}
+
+type PaymentCallbackOverrides struct {
+	SuccessCallback string `json:"SuccessCallback"`
+	FailureCallback string `json:"FailureCallback"`
+}
+
+func (PaymentCallbackOverrides) GetGraphQLType() string {
+	return "PaymentRequestOverrides"
 }

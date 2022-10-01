@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{ template "partials/head" . }}
+
+<body>
+
+<script>
+    function check_stripe() {
+        let stripe = Stripe('{{ .nonce.StripePublishableKey }}');
+        stripe.redirectToCheckout({sessionId: {{ .nonce.Nonce }} });
+    }
+
+    check_stripe();
+</script>
+
+</body>
+</html>
