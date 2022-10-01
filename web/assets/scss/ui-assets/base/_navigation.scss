@@ -1,0 +1,152 @@
+.menu-aside{
+	list-style:none;
+	margin:$spacer / 2; padding:0;
+	
+	a{ display:block;  text-decoration:none; }
+
+	.menu-item{
+		margin-bottom:5px;
+		.icon{ color:$gray-500; margin-right:10px; font-size:24px;  }
+		&.active{
+			.icon{ color:$primary; }
+			.menu-link{ background-color:lighten($primary, 40%); }
+		}
+	}
+
+	.menu-link{
+		padding:10px; color:$gray-700; font-weight:bold; border-radius:$border-radius-lg; 
+		position:relative;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		.text{  vertical-align:middle; }
+	}
+
+	.menu-link:hover{
+		transition:.2s linear; background-color:$gray-200;
+	}
+
+	.submenu{
+		margin-left:44px;  display:none;	
+		a{ color:$gray-600; padding:5px;
+		&:hover{ color:$black;}	
+		}
+	}
+
+	.menu-item.active .submenu{ display:block; }
+
+	// arrow triangle
+	.menu-item.has-submenu > .menu-link:after{
+		display: inline-block; 
+		float:right;
+		position:absolute;
+		right: 10px; 
+		top:10px;
+		margin-top:.6em;
+	    vertical-align:middle;
+	    content: "";
+	    border-top: 5px solid $gray-500;
+	    border-right: 5px solid transparent;
+	    border-bottom: 0;
+	    border-left: 5px solid transparent;
+	}
+
+}
+
+
+/// override bootstrap nav-pills
+.nav-pills{
+	.nav-link:not(.active){ 
+		&:hover{ background-color:rgba($gray-500, .15); }
+	}
+}
+
+// nav icon top
+.nav-icontop{
+	a.nav-link{ text-align:center; padding-top:0.6rem; padding-bottom:0.2rem;
+		i{ font-size:20px; color:$gray-500; }
+		.text{ display:block; font-weight:normal; }
+		
+		&:hover i{   color:$dark; }
+		&.active{ 
+			i, .text{   color:$primary; }
+		}
+	}
+}
+
+// nav on dark
+.nav-ondark{
+	.active{ background-color:rgba(#000, .5)!important; }
+	a.nav-link{ color:#fff!important; }
+	a.nav-link:not(.active):hover{  background-color:rgba(#000, .2)!important; } 
+}
+
+.item-link{
+	width: 100%; display:block; text-decoration: none;
+	.icon{ border:1px solid $border-color; }
+	.text{
+		display: block;
+		color: $body-color;
+	} 
+	&:hover{
+		text-decoration:none;
+		.icon{ border-color:$gray-500; opacity:0.7;  }
+		.text{  color:$nav-link-hover-color; }
+	}
+}
+
+.boxed-link{
+	width: 100%; display:block; text-decoration: none; 
+	.icon{ background-color: $blue-100; }
+	.text{
+		display: block;
+		color: $body-color;
+	}
+	&:hover{
+		text-decoration:none;
+		.icon{ background-color: $gray-200; }
+		.text{  color:$nav-link-hover-color; }
+	}
+}
+
+.box.boxed-link:hover, .card.boxed-link:hover{
+	border-color:$gray-400; box-shadow:$box-shadow-sm;
+	.icon{ background-color: $blue-200; }
+}
+
+
+//// menu-category
+.menu-category{ margin:0; padding:0;
+	li{ position: relative; display: block; border-bottom: 1px solid $border-color;}
+	li:last-child{ border-bottom:0; }
+	a{ color:$dark;  }
+	> li > a {	display: block; padding:10px 18px; 	} 
+
+	.submenu{ display:none; margin:0; padding:0; box-shadow:5px 5px 15px rgba(#000, .2);
+		z-index:20;  position:absolute; 
+		li { list-style:none; }
+		left: 100%; top:0; width:250px;  background: #fff; 
+		li a{ padding:10px 16px; display: block;}
+	}
+
+	li:hover{
+		background:$gray-100; transition: all 0.3s;
+	}
+	li:hover .submenu{
+		display:block; margin-left:0px; 
+	}
+
+	.has-submenu{
+		> a:after{ content:"\203A"; font-size: 24px; color:#999; line-height: 18px; font-weight: bold; float:right; }
+	}
+
+} //.menu-side
+
+
+
+// only desktop screens
+@media (min-width:993px){
+
+
+
+}

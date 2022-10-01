@@ -48,6 +48,12 @@ type CartItem struct {
 	Quantity  int    `json:"quantity"`
 }
 
+type QueryCartItem struct {
+	Product       Product `json:"product"`
+	Quantity      int     `json:"quantity"`
+	PurchasePrice int64   `json:"purchasePrice"`
+}
+
 func (CartItem) GetGraphQLType() string {
 	return "CartItemParams"
 }
@@ -61,17 +67,34 @@ type GuestCheckoutPlaceOrderParams struct {
 	FirstName        string        `json:"firstName"`
 	LastName         string        `json:"lastName"`
 	Email            string        `json:"email"`
+	Note             string        `json:"note"`
+	CouponCode       string        `json:"couponCode"`
 }
 
 func (GuestCheckoutPlaceOrderParams) GetGraphQLType() string {
 	return "GuestCheckoutPlaceOrderParams"
 }
 
+type Address struct {
+	Street    string   `json:"street"`
+	StreetTwo string   `json:"streetTwo"`
+	City      string   `json:"city"`
+	State     string   `json:"state"`
+	Postcode  string   `json:"postcode"`
+	Phone     string   `json:"phone"`
+	Email     string   `json:"email"`
+	Location  Location `json:"location"`
+}
+
 type AddressParams struct {
 	Street     string `json:"street"`
+	StreetTwo  string `json:"streetTwo"`
 	City       string `json:"city"`
+	State      string `json:"state"`
 	Postcode   string `json:"postcode"`
 	LocationId string `json:"locationId"`
+	Phone      string `json:"phone"`
+	Email      string `json:"email"`
 }
 
 func (AddressParams) GetGraphQLType() string {
@@ -84,17 +107,22 @@ type Location struct {
 }
 
 type ShippingMethod struct {
-	ID          string `json:"id"`
-	DisplayName string `json:"displayName"`
+	ID                 string `json:"id"`
+	DisplayName        string `json:"displayName"`
+	DeliveryTimeInDays int    `json:"deliveryTimeInDays"`
+	DeliveryCharge     int64  `json:"deliveryCharge"`
+	IsFlat             bool   `json:"isFlat"`
 }
 
 type PaymentMethod struct {
-	ID          string `json:"id"`
-	DisplayName string `json:"displayName"`
+	ID               string `json:"id"`
+	DisplayName      string `json:"displayName"`
+	IsDigitalPayment bool   `json:"isDigitalPayment"`
 }
 
 type OrderedItem struct {
 	PurchasePrice int64   `json:"purchasePrice"`
+	Quantity      int     `json:"quantity"`
 	Product       Product `json:"product"`
 }
 
@@ -103,15 +131,33 @@ type OrderedCart struct {
 }
 
 type OrderDetail struct {
-	ID               string      `json:"id"`
-	Hash             string      `json:"hash"`
-	Subtotal         int64       `json:"subtotal"`
-	GrandTotal       int64       `json:"grandTotal"`
-	DiscountedAmount int64       `json:"discountedAmount"`
-	Status           string      `json:"status"`
-	PaymentStatus    string      `json:"paymentStatus"`
-	CreatedAt        string      `json:"createdAt"`
-	Cart             OrderedCart `json:"cart"`
+	ID                   string         `json:"id"`
+	Hash                 string         `json:"hash"`
+	Subtotal             int64          `json:"subtotal"`
+	GrandTotal           int64          `json:"grandTotal"`
+	DiscountedAmount     int64          `json:"discountedAmount"`
+	Status               string         `json:"status"`
+	PaymentStatus        string         `json:"paymentStatus"`
+	CreatedAt            string         `json:"createdAt"`
+	Cart                 OrderedCart    `json:"cart"`
+	CouponCode           CouponCode     `json:"couponCode"`
+	Note                 string         `json:"note"`
+	ShippingCharge       int64          `json:"shippingCharge"`
+	PaymentProcessingFee int64          `json:"paymentProcessingFee"`
+	BillingAddress       Address        `json:"billingAddress"`
+	ShippingAddress      Address        `json:"shippingAddress"`
+	PaymentMethod        PaymentMethod  `json:"paymentMethod"`
+	ShippingMethod       ShippingMethod `json:"shippingMethod"`
+	Customer             Customer       `json:"customer"`
+}
+
+type Customer struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
+type CouponCode struct {
+	Code string `json:"code"`
 }
 
 type Shop struct {
@@ -128,4 +174,10 @@ type Shop struct {
 	FaviconPath     string   `json:"faviconPath"`
 	IsOpen          bool     `json:"isOpen"`
 	Currency        string   `json:"currency"`
+}
+
+type Cart struct {
+	ID                 string          `json:"id"`
+	IsShippingRequired bool            `json:"isShippingRequired"`
+	CartItems          []QueryCartItem `json:"cartItems"`
 }

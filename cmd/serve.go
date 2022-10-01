@@ -27,7 +27,7 @@ func serve(cmd *cobra.Command, args []string) {
 
 	twilioService := services.NewTwilioService(config.App())
 	processorService := processors.NewStateProcessor(config.App(), stateService, shopemaaService, twilioService)
-	r := handlers.NewRouter(processorService, shopemaaService)
+	r := handlers.NewRouter(config.App(), processorService, shopemaaService)
 
 	stop := make(chan os.Signal)
 	signal.Notify(stop, os.Interrupt)

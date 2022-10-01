@@ -1,0 +1,22 @@
+
+.btn-icon{ width: 2.6rem; padding-left:0px; padding-right:0px; }
+.btn-icon.btn-sm{ width: 2rem; }
+.btn-icon.btn-lg{ width: 2.8rem; }
+
+.btn-light{ background-color:#fff; border-color:$border-color;  color:$dark;
+	i{ color:$gray-500; }
+	&:hover{ border-color:darken($border-color, 10%);  color:$primary;  
+		i{ color:$primary; }
+	}
+	&.active{ border-color:darken($border-color, 10%); box-shadow: $btn-active-box-shadow;  }
+	
+}
+
+.btn-primary-light{ color:$primary; }
+
+.btn{
+	i{ min-width:16px; }
+	.text + i{ margin-left:10px; }
+	i + .text{ margin-left:10px; }
+}
+

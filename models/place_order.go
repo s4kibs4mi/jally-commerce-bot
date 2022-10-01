@@ -6,4 +6,5 @@ type PlaceOrderParams struct {
 	FirstName  string
 	LastName   string
 	Phone      string
+	Email      string
 }

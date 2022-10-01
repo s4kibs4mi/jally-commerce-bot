@@ -1,0 +1,65 @@
+
+
+/* ================== header main ==================  */
+.header-top-light{
+	.nav-link{  font-weight:normal;
+		&:hover{ color:$dark; }
+	}
+}
+.header-top-dark{
+	color:rgba($white, .75);
+	.nav-link{ color:inherit;  font-weight:normal;
+		&:hover{ color:$white;  }
+	}
+}
+
+.header-main{position:relative; padding-top:1rem; padding-bottom:1rem;}
+
+.brand-wrap, .navbar-brand { 
+	 opacity:0.75; 
+    .logo{margin-right:7px; max-height:42px; display:inline-block;}
+    &:hover{ opacity:1}
+}
+
+
+.widget-header{ display:inline-block; vertical-align: middle; position:relative;
+	a{ text-decoration:none; color:inherit }
+	i{ color:$gray-600;}
+	form { min-width: 280px; }
+
+	.notify{ position:absolute; top:-3px; right:-7px}
+	&:hover{
+		i{color:$dark; }
+	}
+	
+	
+	.widget-icontop{
+	    display:inline-block; 
+	    vertical-align: middle;
+	    position: relative;
+	    text-align: center;
+		.icon-area {
+		    font-size: 22px;
+		    position:relative;
+		    display: inline-block;
+		    width: 30px; height: 30px;
+		}
+		.text{
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    white-space: nowrap;
+		    display: block;
+		    line-height: 1.2;
+		}
+	}
+
+	
+}
+
+
+/* desktop only */
+@media all and (min-width: 768px) {
+
+	
+}
+/* desktop only .end */

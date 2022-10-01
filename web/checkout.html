@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+{{ template "partials/head" . }}
+
+<body>
+
+{{ template "partials/header" . }}
+
+<section class="padding-y bg-light">
+    <div class="container">
+        <div class="row">
+            <main class="col-xl-8 col-lg-8">
+                <article class="card">
+                    <form class="content-body" method="post" enctype="application/x-www-form-urlencoded"
+                          action="/checkout/{{ .cart.ID }}">
+                        <h5 class="card-title">Guest Checkout</h5>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label">First name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Type here" name="firstName"
+                                       required>
+                            </div>
+
+                            <div class="col-6">
+                                <label class="form-label">Last name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Type here" name="lastName"
+                                       required>
+                            </div>
+
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Phone<span class="text-danger">*</span></label>
+                                <input type="text" value="" class="form-control" placeholder="Type here" name="phone"
+                                       required>
+                            </div>
+
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Email<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Type here" name="email" required>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="card-title">Delivery Info</h5>
+
+                        <div class="row">
+                            <div class="col-sm-8 mb-3">
+                                <label for="" class="form-label">Address<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Type here" name="address" required>
+                            </div>
+
+                            <div class="col-sm-4 col-6 mb-3">
+                                <label for="" class="form-label">Postal code<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Type here" name="postalCode"
+                                       required>
+                            </div>
+
+                            <div class="col-sm-4 col-6 mb-3">
+                                <label for="" class="form-label">City<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="Type here" name="city" required>
+                            </div>
+
+                            <div class="col-sm-4 col-6 mb-3">
+                                <label for="" class="form-label">State</label>
+                                <input type="text" class="form-control" placeholder="Type here" name="state">
+                            </div>
+
+                            <div class="col-sm-4 mb-3">
+                                <label for="" class="form-label">Country<span class="text-danger">*</span></label>
+                                <select class="form-select" id="country" aria-label="country" name="country" required>
+                                    {{ range $l := .locations }}
+                                        <option value="{{ $l.ID }}">{{ $l.Name }}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label for="" class="form-label">Delivery Method<span
+                                            class="text-danger">*</span></label>
+                                <select class="form-select" id="shippingMethod" aria-label="shippingMethod"
+                                        name="shippingMethod" required
+                                        onchange="onShippingMethodChange(event)">
+                                    <option value="Select" id="shipping-select" selected>Select</option>
+
+                                    {{ range $sm := .shippingMethods }}
+                                        <option value="{{ $sm.ID }}">
+                                            {{ $sm.DisplayName }} - {{ formatAmount $sm.DeliveryCharge }} -&nbsp;
+                                            {{ if eq $sm.DeliveryTimeInDays 0 }}
+                                                Immediate delivery
+                                            {{end}}
+                                            {{ if ne $sm.DeliveryTimeInDays 0 }}
+                                                Delivery in {{$sm.DeliveryTimeInDays}} days
+                                            {{end}}
+                                        </option>
+                                    {{end}}
+                                </select>
+
+                                {{ range $sm := .shippingMethods }}
+                                    <input type="hidden" id="sm_fee_{{$sm.ID}}" value="{{$sm.DeliveryCharge}}"/>
+                                {{end}}
+                            </div>
+
+                            <div class="col-sm-6 mb-3">
+                                <label for="" class="form-label">Payment Method<span
+                                            class="text-danger">*</span></label>
+                                <select class="form-select" id="paymentMethod" aria-label="paymentMethod"
+                                        name="paymentMethod" required>
+                                    {{ range $pm := .paymentMethods }}
+                                        <option value="{{ $pm.ID }}">{{ $pm.DisplayName }}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="" class="form-label">Message to restaurant</label>
+                            <textarea class="form-control" name="note"></textarea>
+                        </div>
+
+                        <div class="float-end">
+                            <input type="submit" class="btn btn-primary" value="Complete Order"/>
+                        </div>
+                    </form>
+                </article>
+            </main>
+
+            <aside class="col-xl-4 col-lg-4">
+                <article class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px">
+                    <h6 class="card-title">Summary</h6>
+
+                    <dl class="dlist-align">
+                        <dt>Subtotal:</dt>
+                        <dd class="text-end" id="subtotal">{{ formatAmount .subTotal }}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Discount:</dt>
+                        <dd class="text-end text-danger" id="discount">-{{ formatAmountR .discount }}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Delivery Fee:</dt>
+                        <dd class="text-end" id="delivery-fee">0.00 EUR</dd>
+                    </dl>
+                    <hr>
+                    <dl class="dlist-align">
+                        <dt>Grand Total:</dt>
+                        <dd class="text-end"><strong class="text-dark"
+                                                     id="grand-total">{{ formatAmount .grandTotal }}</strong></dd>
+                    </dl>
+
+                    <div class="input-group my-4">
+                        <input type="text" class="form-control" name="" placeholder="Coupon code" id="coupon-code"
+                               value="{{ .coupon }}">
+                        <button class="btn btn-light text-primary" onclick="on_apply_coupon()">Apply</button>
+                    </div>
+
+                    <hr>
+
+                    <h6 class="mb-4">Items</h6>
+
+                    {{ range $item := .cart.CartItems }}
+                        <figure class="itemside align-items-center mb-4">
+                            <div class="aside">
+                                <b class="badge bg-secondary rounded-pill">{{ $item.Quantity }}</b>
+                                <img src="{{ getIndex $item.Product.FullImages 0 }}" class="img-sm rounded border">
+                            </div>
+
+                            <figcaption class="info">
+                                <a class="title">{{ $item.Product.Name }}</a>
+                                <div class="price text-muted">{{ formatAmount $item.PurchasePrice }}</div>
+                            </figcaption>
+                        </figure>
+                    {{end}}
+                </article>
+            </aside>
+        </div>
+
+        <br><br>
+    </div>
+</section>
+
+<script>
+    function onShippingMethodChange(event) {
+        let selectEle = document.getElementById('shipping-select')
+        if (selectEle !== null) {
+            selectEle.remove()
+        }
+
+        let targetId = `${event.target.value}`;
+        let fee = Number(document.getElementById('sm_fee_' + targetId).value);
+        let deliveryFeeEle = document.getElementById('delivery-fee');
+        let deliveryFee = (0).toFixed(2);
+        if (fee !== 0) {
+            deliveryFee = (fee / 100).toFixed(2);
+        }
+        deliveryFeeEle.innerText = deliveryFee + ' ' + get_currency();
+
+        update_grand_total();
+    }
+
+    function update_grand_total() {
+        let sub = Number(document.getElementById('subtotal').innerText.replace(get_currency(), "").trim()) * 100
+        let delivery = Number(document.getElementById('delivery-fee').innerText.replace(get_currency(), "").trim()) * 100
+        let discount = Number(document.getElementById('discount').innerText.replace(get_currency(), "").trim()) * 100
+        document.getElementById('grand-total').innerText = ((sub + delivery - discount) / 100).toFixed(2) + ' ' + get_currency();
+    }
+
+    function get_currency() {
+        return '{{ .shop.Currency }}';
+    }
+
+    function on_apply_coupon() {
+        let code = document.getElementById('coupon-code').value;
+        if (code.trim() === '') {
+            return
+        }
+        let url = window.location.href;
+        let queryIndex = url.indexOf("?")
+        if (queryIndex >= 0) {
+            url = url.substring(0, queryIndex)
+        }
+        window.location.replace(`${url}?coupon=${code}`)
+    }
+</script>
+
+{{ template "partials/footer" . }}
+
+</body>
+</html>

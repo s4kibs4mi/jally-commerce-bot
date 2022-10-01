@@ -12,6 +12,7 @@ import (
 
 type IStateProcessor interface {
 	Process(req *api_request.CustomerRequest) error
+	ProcessOrderCreated(cartID, orderHash, email string) error
 }
 
 type StateProcessor struct {
@@ -39,6 +40,21 @@ func (p *StateProcessor) Process(req *api_request.CustomerRequest) error {
 	default:
 		return p.processStart(req)
 	}
+}
+
+func (p *StateProcessor) ProcessOrderCreated(cartID, orderHash, email string) error {
+	from, _ := p.stateService.GetIdentityByCartID("from", cartID)
+	to, _ := p.stateService.GetIdentityByCartID("to", cartID)
+
+	msg := "Thank you for the order. We will process it accordingly.\nFollow the link for order details and status update."
+	if err := p.twilioService.Send(from, to, msg); err != nil {
+		log.Log().Errorln(err)
+	}
+	msg = fmt.Sprintf("%s/orders/%s/?email=%s", p.cfg.URL, orderHash, email)
+	if err := p.twilioService.Send(from, to, msg); err != nil {
+		log.Log().Errorln(err)
+	}
+	return nil
 }
 
 func (p *StateProcessor) processStart(req *api_request.CustomerRequest) error {
@@ -138,42 +154,24 @@ func (p *StateProcessor) processPlaceOrder(req *api_request.CustomerRequest) err
 
 	cartID := val.(string)
 
-	names := strings.Split(req.ProfileName, "")
-	lastName := names[0]
-	if len(names) > 1 {
-		lastName = names[1]
-	}
-
-	params := models.PlaceOrderParams{
-		FirstName:  names[0],
-		LastName:   lastName,
-		CartID:     cartID,
-		CustomerID: req.From,
-		Phone:      req.From,
-	}
-
-	orderHash, err := p.shopemaaService.ConfirmOrder(&params)
-	if err != nil {
-		return err
-	}
-
-	msg := "Thanks for your order.\n"
-	msg += fmt.Sprintf("OrderId: %s\n", orderHash)
-	msg += "You will be notified when your order is ready.\nIn the mean time tap the below link to pay online or to check order details."
-
+	msg := "Follow the link to complete your order."
 	if err := p.twilioService.Send(req.From, req.To, msg); err != nil {
 		return err
 	}
 
-	orderUrl := fmt.Sprintf("%s/orders/%s", p.cfg.URL, orderHash)
-
-	if err := p.twilioService.Send(req.From, req.To, orderUrl); err != nil {
+	checkoutUrl := fmt.Sprintf("%s/checkout/%s\n", p.cfg.URL, cartID)
+	if err := p.twilioService.Send(req.From, req.To, checkoutUrl); err != nil {
 		return err
 	}
 	if err := p.stateService.SetState(req.From, models.CustomerStateStart); err != nil {
 		return err
 	}
-
+	if err := p.stateService.SetIdentityByCartID("from", cartID, req.From); err != nil {
+		return err
+	}
+	if err := p.stateService.SetIdentityByCartID("to", cartID, req.To); err != nil {
+		return err
+	}
 	return nil
 }
 

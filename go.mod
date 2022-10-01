@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/gofiber/fiber/v2 v2.37.1
+	github.com/gofiber/template v1.7.1
 	github.com/hasura/go-graphql-client v0.8.0
 	github.com/julvo/htmlgo v0.0.0-20200505154053-2e9f4b95a223
 	github.com/sirupsen/logrus v1.6.0
