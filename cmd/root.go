@@ -12,8 +12,8 @@ var (
 	// RootCmd is the root command of nur service
 	RootCmd = &cobra.Command{
 		Use:   "jally-commerce-bot",
-		Short: "A bot for automating order management system using Twilio & Shopemaa",
-		Long:  `A bot for automating order management system using Twilio & Shopemaa`,
+		Short: "A bot for automating order management system on social media",
+		Long:  `A bot for automating order management system on social media`,
 	}
 )
 

@@ -1,6 +1,11 @@
 # Jally Commerce Bot
 
-A bot for automating order management system using Twilio, Facebook & Shopemaa.
+A bot for automating order management system on social media & messaging platforms.
+
+#### Supported platforms
+
+- WhatsApp
+- Facebook
 
 #### How it looks like
 
