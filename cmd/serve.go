@@ -7,6 +7,7 @@ import (
 	"github.com/s4kibs4mi/jally-commerce-bot/log"
 	"github.com/s4kibs4mi/jally-commerce-bot/processors"
 	"github.com/s4kibs4mi/jally-commerce-bot/services"
+	"github.com/s4kibs4mi/jally-commerce-bot/services/messenger"
 	"github.com/spf13/cobra"
 	"os"
 	"os/signal"
@@ -25,9 +26,29 @@ func serve(cmd *cobra.Command, args []string) {
 		panic(err)
 	}
 
-	twilioService := services.NewTwilioService(config.App())
-	processorService := processors.NewTwilioStateProcessor(config.App(), stateService, shopemaaService, twilioService)
-	r := handlers.NewRouter(config.App(), processorService, shopemaaService)
+	var processor processors.IStateProcessor
+	var r handlers.IRouter
+
+	if config.App().ActiveProcessor == "facebook" {
+		fbMessenger := &messenger.Messenger{
+			AccessToken: config.App().FacebookAccessToken,
+			Debug:       messenger.DebugAll,
+		}
+		processor, err = processors.NewFacebookStateProcessor(config.App(), stateService, shopemaaService, fbMessenger)
+		if err != nil {
+			panic(err)
+		}
+		r = handlers.NewRouter(config.App(), processor, shopemaaService, fbMessenger)
+	} else if config.App().ActiveProcessor == "twilio" {
+		twilioService := services.NewTwilioService(config.App())
+		processor, err = processors.NewTwilioStateProcessor(config.App(), stateService, shopemaaService, twilioService)
+		if err != nil {
+			panic(err)
+		}
+		r = handlers.NewRouter(config.App(), processor, shopemaaService, nil)
+	} else {
+		panic("Unknown processor selected")
+	}
 
 	stop := make(chan os.Signal)
 	signal.Notify(stop, os.Interrupt)

@@ -5,6 +5,7 @@ import (
 )
 
 type IStateProcessor interface {
+	Init() error
 	Process(req *api_request.CustomerRequest) error
 	ProcessOrderCreated(cartID, orderHash, email string) error
 }

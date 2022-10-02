@@ -17,6 +17,11 @@ type TwilioStateProcessor struct {
 	cfg             *config.Application
 }
 
+func (p *TwilioStateProcessor) Init() error {
+
+	return nil
+}
+
 func (p *TwilioStateProcessor) Process(req *api_request.CustomerRequest) error {
 	log.Log().Infoln("Message Received....")
 
@@ -57,7 +62,7 @@ func (p *TwilioStateProcessor) processStart(req *api_request.CustomerRequest) er
 	msg += "Welcome to *" + p.shopemaaService.GetName() + "*.\n\n"
 	msg += "*Today's menu*,\n"
 
-	products, err := p.shopemaaService.ListProducts()
+	products, err := p.shopemaaService.ListProducts(1, 25)
 	if err != nil {
 		return err
 	}
@@ -184,11 +189,15 @@ func (p *TwilioStateProcessor) processCancelOrder(req *api_request.CustomerReque
 }
 
 func NewTwilioStateProcessor(cfg *config.Application, stateService services.IStateService, shopemaaService services.IShopemaaService,
-	twilioService services.ITwilioService) IStateProcessor {
-	return &TwilioStateProcessor{
+	twilioService services.ITwilioService) (IStateProcessor, error) {
+	processor := &TwilioStateProcessor{
 		cfg:             cfg,
 		stateService:    stateService,
 		shopemaaService: shopemaaService,
 		twilioService:   twilioService,
 	}
+	if err := processor.Init(); err != nil {
+		return nil, err
+	}
+	return processor, nil
 }

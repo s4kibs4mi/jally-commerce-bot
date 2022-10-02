@@ -1,8 +1,8 @@
 package models
 
 type Search struct {
-	Query   string   `json:"query"`
-	Filters []string `json:"filters"`
+	Query   string              `json:"query"`
+	Filters []map[string]string `json:"filters"`
 }
 
 func (Search) GetGraphQLType() string {
@@ -175,6 +175,7 @@ type Shop struct {
 	FaviconPath     string   `json:"faviconPath"`
 	IsOpen          bool     `json:"isOpen"`
 	Currency        string   `json:"currency"`
+	SupportPhone    string   `json:"supportPhone"`
 }
 
 type Cart struct {
@@ -196,4 +197,10 @@ type PaymentCallbackOverrides struct {
 
 func (PaymentCallbackOverrides) GetGraphQLType() string {
 	return "PaymentRequestOverrides"
+}
+
+type Category struct {
+	ID           string `json:"id"`
+	Name         string `json:"name"`
+	ProductCount int    `json:"product_count"`
 }

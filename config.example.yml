@@ -8,3 +8,6 @@ app:
   twilio_username: "" # twilio accountSid
   twilio_password: "" # twilio auth token
   url: "https://example.com"
+  facebook_page_id: "test-id"
+  facebook_access_token: "test-token"
+  active_processor: "facebook"  # supported processors: facebook, twilio

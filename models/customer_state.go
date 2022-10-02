@@ -9,4 +9,5 @@ const (
 	CustomerStateAdditionalData CustomerState = "additional_data"
 	CustomerStatePay            CustomerState = "pay"
 	CustomerStateOrderConfirmed CustomerState = "order_confirmed"
+	CustomerStateSearchProducts CustomerState = "search_products"
 )

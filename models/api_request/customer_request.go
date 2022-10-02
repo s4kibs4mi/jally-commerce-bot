@@ -1,6 +1,9 @@
 package api_request
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/s4kibs4mi/jally-commerce-bot/services/messenger"
+)
 
 type CustomerRequest struct {
 	AccountSid  string
@@ -9,6 +12,12 @@ type CustomerRequest struct {
 	To          string
 	MessageSid  string
 	ProfileName string
+
+	Event     messenger.Event
+	Opts      messenger.MessageOpts
+	Message   messenger.ReceivedMessage
+	Postback  messenger.Postback
+	IsMessage bool
 }
 
 func FromFiberRequest(ctx *fiber.Ctx) *CustomerRequest {

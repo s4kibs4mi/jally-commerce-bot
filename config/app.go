@@ -6,14 +6,17 @@ import (
 
 // Application holds the application configuration
 type Application struct {
-	Name           string
-	Host           string
-	Port           int
-	ShopemaaKey    string
-	ShopemaaSecret string
-	TwilioUsername string
-	TwilioPassword string
-	URL            string
+	Name                string
+	Host                string
+	Port                int
+	ShopemaaKey         string
+	ShopemaaSecret      string
+	TwilioUsername      string
+	TwilioPassword      string
+	URL                 string
+	FacebookPageID      string
+	FacebookAccessToken string
+	ActiveProcessor     string
 }
 
 // app is the default application configuration
@@ -30,13 +33,16 @@ func LoadApp() {
 	defer mu.Unlock()
 
 	app = Application{
-		Name:           viper.GetString("app.name"),
-		Host:           viper.GetString("app.host"),
-		Port:           viper.GetInt("app.port"),
-		ShopemaaKey:    viper.GetString("app.shopemaa_key"),
-		ShopemaaSecret: viper.GetString("app.shopemaa_secret"),
-		TwilioUsername: viper.GetString("app.twilio_username"),
-		TwilioPassword: viper.GetString("app.twilio_password"),
-		URL:            viper.GetString("app.url"),
+		Name:                viper.GetString("app.name"),
+		Host:                viper.GetString("app.host"),
+		Port:                viper.GetInt("app.port"),
+		ShopemaaKey:         viper.GetString("app.shopemaa_key"),
+		ShopemaaSecret:      viper.GetString("app.shopemaa_secret"),
+		TwilioUsername:      viper.GetString("app.twilio_username"),
+		TwilioPassword:      viper.GetString("app.twilio_password"),
+		URL:                 viper.GetString("app.url"),
+		FacebookPageID:      viper.GetString("app.facebook_page_id"),
+		FacebookAccessToken: viper.GetString("app.facebook_access_token"),
+		ActiveProcessor:     viper.GetString("app.active_processor"),
 	}
 }
